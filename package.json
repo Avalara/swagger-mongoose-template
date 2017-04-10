@@ -1,0 +1,20 @@
+{
+  "name": "swagger-mongoose-template",
+  "version": "1.0.0",
+  "description": "Creates mongoose model stubs from a swagger json.",
+  "main": "built/index.js",
+  "keywords": [
+    "swagger"
+  ],
+  "bin": {
+    "mongtemplate": "built/cli.js"
+  },
+  "author": "Willian Krueger",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^7.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.2"
+  }
+}
