@@ -4,14 +4,17 @@ function main(swaggerDoc) {
     var source = intermediate.convert(swaggerDoc);
     return toString(source);
 }
-/*
 //"profissional" testing
-import fs = require('fs')
-let file = fs.readFileSync('./built/srctest.json')
-let parsed = JSON.parse(file.toString())
-let out = main(parsed)
-fs.writeFileSync('out.js', out)
-*/
+const fs = require("fs");
+try {
+    let file = fs.readFileSync('./built/srctest.json');
+    let parsed = JSON.parse(file.toString());
+    let out = main(parsed);
+    fs.writeFileSync('out.js', out);
+}
+catch (err) {
+    console.error(err);
+}
 function toString(source) {
     var out = '';
     Object.keys(source).forEach(key => {
@@ -37,18 +40,19 @@ function toString(source) {
                 return out;
             }
             if (value.__reference__) {
+                /*
                 let out = {
                     type: '@@' + value.__reference__ + '@@'
-                };
+                } as any
                 //one liner
                 if (isOneLiner(value)) {
-                    return out.type;
+                    return out.type
                 }
-                if (value.enum)
-                    out.enum = value.enum;
-                if (value.required)
-                    out.required = value.required;
-                return out;
+                if (value.enum) out.enum = value.enum
+                if (value.required) out.required = value.required
+                return out
+                */
+                return '@@' + value.__reference__ + '@@';
             }
             if (value.__array__) {
                 return [value.__array__];

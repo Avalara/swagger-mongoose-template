@@ -6,14 +6,17 @@ function main(swaggerDoc) {
 }
 export = main
 
-/*
 //"profissional" testing
 import fs = require('fs')
-let file = fs.readFileSync('./built/srctest.json')
-let parsed = JSON.parse(file.toString())
-let out = main(parsed)
-fs.writeFileSync('out.js', out)
-*/
+try {
+    let file = fs.readFileSync('./built/srctest.json')
+    let parsed = JSON.parse(file.toString())
+    let out = main(parsed)
+    fs.writeFileSync('out.js', out)
+} catch(err) {
+    console.error(err)
+}
+
 
 function toString(source) : string {
 
@@ -41,6 +44,7 @@ function toString(source) : string {
             }
 
             if (value.__reference__) {
+                /*
                 let out = {
                     type: '@@' + value.__reference__ + '@@'
                 } as any
@@ -51,6 +55,8 @@ function toString(source) : string {
                 if (value.enum) out.enum = value.enum
                 if (value.required) out.required = value.required
                 return out
+                */
+                return '@@' + value.__reference__ + '@@'
             }
 
             if (value.__array__) {
