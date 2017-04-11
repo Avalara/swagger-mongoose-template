@@ -6,16 +6,17 @@ function main(swaggerDoc) {
     return toString(source);
 }
 //"profissional" testing
-const fs = require("fs");
+/*
+import fs = require('fs')
 try {
-    let file = fs.readFileSync('./built/srctest.json');
-    let parsed = JSON.parse(file.toString());
-    let out = main(parsed);
-    fs.writeFileSync('out.js', out);
+    let file = fs.readFileSync('./built/srctest.json')
+    let parsed = JSON.parse(file.toString())
+    let out = main(parsed)
+    fs.writeFileSync('out.js', out)
+} catch(err) {
+    console.error(err)
 }
-catch (err) {
-    console.error(err);
-}
+*/
 function toString(source) {
     let depGraph = new depGraphModule.DepGraph();
     var out = {};

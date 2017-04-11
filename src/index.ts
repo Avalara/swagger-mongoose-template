@@ -8,6 +8,7 @@ function main(swaggerDoc) {
 export = main
 
 //"profissional" testing
+/*
 import fs = require('fs')
 try {
     let file = fs.readFileSync('./built/srctest.json')
@@ -17,6 +18,7 @@ try {
 } catch(err) {
     console.error(err)
 }
+*/
 
 
 function toString(source) : string {
