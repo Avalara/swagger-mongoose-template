@@ -12,6 +12,7 @@
   "author": "Willian Krueger",
   "license": "MIT",
   "dependencies": {
+    "dependency-graph": "^0.5.0",
     "yargs": "^7.0.2"
   },
   "devDependencies": {

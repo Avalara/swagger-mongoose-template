@@ -1,5 +1,6 @@
 "use strict";
 const intermediate = require("./intermediate-format");
+const depGraphModule = require("dependency-graph");
 function main(swaggerDoc) {
     var source = intermediate.convert(swaggerDoc);
     return toString(source);
@@ -16,12 +17,15 @@ catch (err) {
     console.error(err);
 }
 function toString(source) {
-    var out = '';
+    let depGraph = new depGraphModule.DepGraph();
+    var out = {};
     Object.keys(source).forEach(key => {
+        let deps = new Set();
         var item = source[key];
         var extend = [];
         var stringified = JSON.stringify(item, (key, value) => {
             if (key === '__extends__') {
+                value.forEach(v => deps.add(v));
                 extend = [...extend, ...value];
                 return undefined;
             }
@@ -52,6 +56,7 @@ function toString(source) {
                 if (value.required) out.required = value.required
                 return out
                 */
+                deps.add(value.__reference__);
                 return '@@' + value.__reference__ + '@@';
             }
             if (value.__array__) {
@@ -63,9 +68,21 @@ function toString(source) {
         if (extend.length) {
             replaced = `Object.assign({}, ${extend.join(',')}, ${replaced} )`;
         }
-        out += 'var ' + key + ' = ' + replaced + '\nexports.' + key + ' = ' + key + '\n\n';
+        out[key] = {
+            text: 'var ' + key + ' = ' + replaced + '\nexports.' + key + ' = ' + key + '\n\n',
+            deps: Array.from(deps)
+        };
     });
-    return out;
+    Object.keys(out).forEach(key => depGraph.addNode(key));
+    Object.keys(out).forEach(key => {
+        let item = out[key];
+        item.deps.forEach(dep => depGraph.addDependency(key, dep));
+    });
+    let order = depGraph.overallOrder();
+    return order.reduce((concat, key) => {
+        concat += out[key].text;
+        return concat;
+    }, '');
 }
 function isOneLiner(obj) {
     return Object.keys(obj).filter(key => {
