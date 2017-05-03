@@ -1,7 +1,7 @@
 type Reference = { __reference__: string }
 const Reference = str => ({ __reference__: str })
 
-type TypesEnum = 'String' | 'Number' | 'Boolean'
+type TypesEnum = 'String' | 'Number' | 'Boolean' | 'Date'
 type Type = { __type__: TypesEnum, enum?: any[] }
 const Type = (str: TypesEnum, en?) => ({ __type__: str, enum: en })
 
@@ -56,8 +56,14 @@ export function typeTemplate(swaggerType: SwaggerType): IntermediateType {
         return Type('Number')
     }
 
-    if (~['string', 'boolean'].indexOf(swaggerType.type)) {
-        return swaggerType.type === 'string' ? Type('String') : Type('Boolean')
+    if (swaggerType.type === 'boolean') {
+        return Type('Boolean')
+    }
+
+    if (swaggerType.type === 'string' ) {
+        if (swaggerType.format === 'date' || swaggerType.format === 'date-time')
+            return Type('Date')
+        return Type('String')
     }
 
 

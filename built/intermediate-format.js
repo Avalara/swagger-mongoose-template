@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const Reference = str => ({ __reference__: str });
 const Type = (str, en) => ({ __type__: str, enum: en });
 const Arr = (any) => ({ __array__: any });
@@ -26,8 +27,13 @@ function typeTemplate(swaggerType) {
     if (~['integer', 'double', 'number'].indexOf(swaggerType.type)) {
         return Type('Number');
     }
-    if (~['string', 'boolean'].indexOf(swaggerType.type)) {
-        return swaggerType.type === 'string' ? Type('String') : Type('Boolean');
+    if (swaggerType.type === 'boolean') {
+        return Type('Boolean');
+    }
+    if (swaggerType.type === 'string') {
+        if (swaggerType.format === 'date' || swaggerType.format === 'date-time')
+            return Type('Date');
+        return Type('String');
     }
     if (swaggerType.type === 'object' || swaggerType.properties) {
         let merged = pairs(swaggerType.properties).reduce((out, [key, prop]) => {
@@ -76,6 +82,7 @@ function mergeAllof(swaggerType, key = 'allOf') {
                 return prev;
             }
             refd = toMerge;
+            //refd = findDef(__doc, split)
         }
         else {
             refd = toMerge;

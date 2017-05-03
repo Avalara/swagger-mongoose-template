@@ -7,8 +7,8 @@ function main(swaggerDoc) {
 }
 export = main
 
-//"profissional" testing
-/*
+//"professional" testing
+
 import fs = require('fs')
 try {
     let file = fs.readFileSync('./built/srctest.json')
@@ -18,7 +18,6 @@ try {
 } catch(err) {
     console.error(err)
 }
-*/
 
 
 function toString(source) : string {
@@ -51,18 +50,6 @@ function toString(source) : string {
             }
 
             if (value.__reference__) {
-                /*
-                let out = {
-                    type: '@@' + value.__reference__ + '@@'
-                } as any
-                //one liner
-                if (isOneLiner(value)) {
-                    return out.type
-                }
-                if (value.enum) out.enum = value.enum
-                if (value.required) out.required = value.required
-                return out
-                */
                 deps.add(value.__reference__)
                 return '@@' + value.__reference__ + '@@'
             }
