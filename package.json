@@ -1,6 +1,6 @@
 {
   "name": "swagger-mongoose-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Creates mongoose model stubs from a swagger json.",
   "main": "built/index.js",
   "keywords": [

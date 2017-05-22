@@ -7,14 +7,16 @@ function main(swaggerDoc) {
 }
 //"professional" testing
 const fs = require("fs");
-try {
-    let file = fs.readFileSync('./built/srctest.json');
-    let parsed = JSON.parse(file.toString());
-    let out = main(parsed);
-    fs.writeFileSync('out.js', out);
-}
-catch (err) {
-    console.error(err);
+if (process.env.NODE_ENV === 'test') {
+    try {
+        let file = fs.readFileSync('./built/srctest.json');
+        let parsed = JSON.parse(file.toString());
+        let out = main(parsed);
+        fs.writeFileSync('out.js', out);
+    }
+    catch (err) {
+        console.error(err);
+    }
 }
 function toString(source) {
     let depGraph = new depGraphModule.DepGraph();
